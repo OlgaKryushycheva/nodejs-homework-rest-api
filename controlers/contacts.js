@@ -27,12 +27,18 @@ const deleteByID = async (req, res) => {
     throw helpers.HttpError(404, "Not found");
   }
 
-  res.json({ message: "Delite success" });
+  res.json({ message: "Contact deleted" });
 };
 
 const updateByID = async (req, res) => {
   const { contactId } = req.params;
+
+  if (!req.body) {
+    throw helpers.HttpError(400, "missing fields");
+  } // не працює
+
   const result = await contactsOperations.updateContact(contactId, req.body);
+  console.log(req.body);
   if (!result) {
     throw helpers.HttpError(404, "Not found");
   }

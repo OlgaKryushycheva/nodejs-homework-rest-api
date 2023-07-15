@@ -1,16 +1,17 @@
 import Joi from "joi";
 
 const contactSchema = Joi.object({
-  name: Joi.string().required().messages({
-    "any.required": "Name must be exist",
+  name: Joi.string().min(2).max(100).required().messages({
+    "any.required": "Missing required 'name' field",
   }),
-  email: Joi.string().required().messages({
-    "any.required": "Email must be exist",
+  email: Joi.string().email({ minDomainSegments: 1 }).required().messages({
+    "any.required": "Missing required 'email' field",
   }),
-  phone: Joi.string().required().messages({
-    "any.required": "Phone must be exist",
+  phone: Joi.alternatives([Joi.string(), Joi.number()]).required().messages({
+    "any.required": "Missing required 'phone' field",
   }),
 });
+// не змогла знайти як перевірити відсутність усього req.body
 
 export default contactSchema;
 

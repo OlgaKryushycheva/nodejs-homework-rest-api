@@ -27,3 +27,6 @@ app.use((err, req, res, next) => {
 });
 
 export default app;
+
+// https://github.com/goitacademy/nodejs-homework-template/pull/3290
+// https://github.com/OlgaKryushycheva/nodejs-homework-rest-api/pull/1
