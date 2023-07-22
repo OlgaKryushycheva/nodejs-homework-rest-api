@@ -1,14 +1,14 @@
+import Contact from "../models/contact.js";
 import helpers from "../helpers/index.js";
-import contactsOperations from "../models/contacts.js";
 
 const getAll = async (req, res) => {
-  const result = await contactsOperations.listContacts();
+  const result = await Contact.find();
   res.json(result);
 };
 
 const getByID = async (req, res) => {
   const { contactId } = req.params;
-  const result = await contactsOperations.getContactById(contactId);
+  const result = await Contact.findById(contactId);
   if (!result) {
     throw helpers.HttpError(404, "Not found");
   }
@@ -16,13 +16,13 @@ const getByID = async (req, res) => {
 };
 
 const add = async (req, res) => {
-  const result = await contactsOperations.addContact(req.body);
+  const result = await Contact.create(req.body);
   res.status(201).json(result);
 };
 
 const deleteByID = async (req, res) => {
   const { contactId } = req.params;
-  const result = await contactsOperations.removeContact(contactId);
+  const result = await Contact.findByIdAndDelete(contactId);
   if (!result) {
     throw helpers.HttpError(404, "Not found");
   }
@@ -33,11 +33,22 @@ const deleteByID = async (req, res) => {
 const updateByID = async (req, res) => {
   const { contactId } = req.params;
 
-  if (!req.body) {
-    throw helpers.HttpError(400, "missing fields");
-  } // не працює
+  const result = await Contact.findByIdAndUpdate(contactId, req.body, {
+    new: true,
+  });
+  console.log(req.body);
+  if (!result) {
+    throw helpers.HttpError(404, "Not found");
+  }
+  res.json(result);
+};
 
-  const result = await contactsOperations.updateContact(contactId, req.body);
+const updateFavorite = async (req, res) => {
+  const { contactId } = req.params;
+
+  const result = await Contact.findByIdAndUpdate(contactId, req.body, {
+    new: true,
+  });
   console.log(req.body);
   if (!result) {
     throw helpers.HttpError(404, "Not found");
@@ -51,4 +62,5 @@ export default {
   add: helpers.ctrlWrapper(add),
   deleteByID: helpers.ctrlWrapper(deleteByID),
   updateByID: helpers.ctrlWrapper(updateByID),
+  updateFavorite: helpers.ctrlWrapper(updateFavorite),
 };

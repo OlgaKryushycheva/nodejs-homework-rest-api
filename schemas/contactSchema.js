@@ -1,6 +1,6 @@
 import Joi from "joi";
 
-const contactSchema = Joi.object({
+const contactAddSchema = Joi.object({
   name: Joi.string().min(2).max(100).required().messages({
     "any.required": "Missing required 'name' field",
   }),
@@ -11,9 +11,17 @@ const contactSchema = Joi.object({
     "any.required": "Missing required 'phone' field",
   }),
 });
-// не змогла знайти як перевірити відсутність усього req.body
 
-export default contactSchema;
+const contactUpdateFavoriteSchema = Joi.object({
+  favorite: Joi.boolean().required().messages({
+    "any.required": "Missing field favorite",
+  }),
+});
+
+export default {
+  contactAddSchema,
+  contactUpdateFavoriteSchema,
+};
 
 // ====================================
 // const contactSchema = Joi.object({
